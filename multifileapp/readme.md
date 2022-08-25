@@ -21,4 +21,4 @@ I would not necessarily structure all of my projects this way. I can see that
 in certain cases it might be beneficial to define such a heirarchy to help better 
 organise/categorise functionality and define an api structure. However, it is likely 
 to be overkill for most small projects, and was really only done here as a learning
-excersize in order to better understand how modules and packages work in Golang.
+exersize in order to better understand how modules and packages work in Golang.
