@@ -1,3 +1,5 @@
+## Using Multiple Source Files in a Go app.
+
 This code was thrown together to get a handle on how to structure a project with 
 multiple packages in a heirarchical structure.
 
