@@ -1,0 +1,5 @@
+go 1.19
+
+use (
+    ./tinygo_yl3_8x7
+)
