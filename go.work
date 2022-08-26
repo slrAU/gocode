@@ -1,5 +1,7 @@
 go 1.19
 
 use (
+    ./tinygo_adafruit_lcd_backpack
+    ./tinygo_mcp9808
     ./tinygo_yl3_8x7
 )

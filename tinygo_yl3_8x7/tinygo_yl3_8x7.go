@@ -1,13 +1,15 @@
-// API for a YL-3 8x7-segment display panel.
-//
-// These devices often consist of two 4x7-segment panels and
-// a pair of 74HC165 (or equivalent) shift registers with a
-// 5-pin connector.
-//
-// These devices are also often common cathode.
-// All segments that are zeroed will be lit.
-// Segments are referenced MSB to LSB: decimal, center, top left, then clockwise to top segment at LSB
-// Panels are referenced left to right: as bit values 1, 2, 4, 8, 16, 32, 64, 128
+/*
+	API for a YL-3 8x7-segment display panel.
+
+These devices often consist of two 4x7-segment panels and
+a pair of 74HC165 (or equivalent) shift registers with a
+5-pin connector.
+
+These devices are also often common cathode.
+All segments that are zeroed will be lit.
+Segments are referenced MSB to LSB: decimal, center, top left, then clockwise to top segment at LSB
+Panels are referenced left to right: as bit values 1, 2, 4, 8, 16, 32, 64, 128
+*/
 package tinygo_yl3_8x7
 
 import (
@@ -69,11 +71,13 @@ func initialiseOutputPin(pin machine.Pin, state bool) {
 	}
 }
 
-// Toggle a GPIO pin high then low.
-//
-// This is used both to shift bits on to the display's
-// shift registers and to trigger the latch to complete
-// the display process.
+/*
+Toggle a GPIO pin high then low.
+
+This is used both to shift bits on to the display's
+shift registers and to trigger the latch to complete
+the display process.
+*/
 func pulsePin(pin machine.Pin) {
 	pin.High()
 	time.Sleep(time.Microsecond * time.Duration(pulseDelay))
@@ -95,17 +99,19 @@ func shiftOut(value uint8) {
 	}
 }
 
-// Configure the YL-3 display prior to accepting calls to WriteDigit().
-//
-//		data uint8
-//			GPIO pin index - sometimes labelled `DIO`
-//		clock uint8
-//			GPIO pin index - sometimes labelled `SCK`
-//		latch uint8
-//			GPIO pin index - sometimes labelled `RCK`
-//		pulseMicroseconds uint16 (optional)
-//	        The delay in microseconds to apply to when
-//	        pulsing a pin high then low during comms.
+/*
+Configure the YL-3 display prior to accepting calls to WriteDigit().
+
+	data uint8
+		GPIO pin index - sometimes labelled `DIO`
+	clock uint8
+		GPIO pin index - sometimes labelled `SCK`
+	latch uint8
+		GPIO pin index - sometimes labelled `RCK`
+	pulseMicroseconds uint16 (optional)
+		The delay in microseconds to apply to when
+		pulsing a pin high then low during comms.
+*/
 func Initialise(dataPin uint8, clockPin uint8, latchPin uint8, pulseMicroseconds ...uint16) {
 	data = machine.Pin(dataPin)
 	initialiseOutputPin(data, false)
@@ -119,15 +125,17 @@ func Initialise(dataPin uint8, clockPin uint8, latchPin uint8, pulseMicroseconds
 	}
 }
 
-// Write a character pattern to a single 7-segment section.
-// This function simplifies how the display panels and led patterns
-// are referenced.  Panels are indexed from left to right. Patterns should
-// use the constants provided, but can represent any 8-bit value as required.
-//
-//	position uint8
-//		panel position index from 0 (left-most) to 7 (right-most)
-//	pattern uint8
-//		8-bit segment pattern to write out (0xFF = off/blank)
+/*
+Write a character pattern to a single 7-segment section.
+This function simplifies how the display panels and led patterns
+are referenced.  Panels are indexed from left to right. Patterns should
+use the constants provided, but can represent any 8-bit value as required.
+
+	position uint8
+		panel position index from 0 (left-most) to 7 (right-most)
+	pattern uint8
+		8-bit segment pattern to write out (0xFF = off/blank)
+*/
 func WriteDigit(position uint8, pattern uint8) {
 	// YL-3 expects the 2 shift registers to be populated in turn.
 	// First, the 7-segment panel to activate
